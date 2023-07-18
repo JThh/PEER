@@ -1,8 +1,8 @@
-output_dir: ~/scratch/torchprotein_output/
+output_dir: ~/code/scratch/torchprotein_output/
 
 dataset:
   class: Fluorescence
-  path: ~/scratch/protein-datasets/
+  path: ~/code/scratch/protein-datasets/
   atom_feature: null
   bond_feature: null
   transform:
@@ -15,8 +15,9 @@ task:
   class: PropertyPrediction
   model:
     class: ESM
-    path: ~/scratch/esm-model-weights/
-    model: ESM-1b
+    path: ~/code/scratch/esm2-model-weights/
+    model: ESM-2-8M
+
   criterion: mse
   metric: ["mae", "rmse", "spearmanr"]
   normalization: False

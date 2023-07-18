@@ -1,8 +1,8 @@
-output_dir: ~/scratch/torchprotein_output/
+output_dir: ~/code/scratch/torchprotein_output/
 
 dataset:
   class: SubcellularLocalization
-  path: ~/scratch/protein-datasets/
+  path: ~/code/scratch/protein-datasets/
   atom_feature: null
   bond_feature: null
   transform:
@@ -18,8 +18,8 @@ task:
   class: PropertyPrediction
   model:
     class: ESM
-    path: ~/scratch/esm-model-weights/
-    model: ESM-1b
+    path: ~/code/scratch/esm2-model-weights/
+    model: ESM-2-3B
   criterion: ce
   metric: ["acc", "mcc"]
   num_mlp_layer: 2
@@ -32,7 +32,7 @@ optimizer:
 
 engine:
   gpus: [0, 1, 2, 3]
-  batch_size: 4
+  batch_size: 1
 
 lr_ratio: 0.1
 
