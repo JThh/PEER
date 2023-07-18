@@ -16,7 +16,7 @@ task:
   model:
     class: ESM
     path: ~/code/scratch/esm2-model-weights/
-    model: ESM-2-8M
+    model: ESM-2-15B
 
   criterion: mse
   metric: ["mae", "rmse", "spearmanr"]
@@ -33,7 +33,7 @@ lr_ratio: 0.1
 
 engine:
   gpus: [0, 1, 2, 3]
-  batch_size: 8
+  batch_size: 1
 
 train:
   num_epoch: 100

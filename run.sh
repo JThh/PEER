@@ -22,11 +22,12 @@ do
     touch "$log_file"
 
     # Modify the YAML file with the desired model and batch size
-    awk -v model="$model" -v batch_size="$batch_size" '/model:/ {sub(/ESM-.*/, model)} /batch_size:/ {sub(/[0-9]+/, batch_size)} 1' "$yaml_file" > temp.yaml && mv temp.yaml "$yaml_file"
-
+    awk -v model="$model" -v batch_size="$batch_size" '/model:/ {sub(/ESM-.*/, model)} /batch_size:/ {sub(/[0-9]+/, batch_size)} 1' "$yaml_file" > temp.yaml # && mv temp.yaml "$yaml_file"
 
     # Execute the Python command
-    CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 --master-port=29501 script/run_single.py -c "$yaml_file" --seed 0 > "$log_file" 2>&1
+    CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 --master-port=29501 script/run_single.py -c temp.yaml --seed 0 > "$log_file" 2>&1
+    
+    rm temp.yaml
 
     echo "Finished running. Log saved to $log_file"
     echo ""
