@@ -1,6 +1,6 @@
 #!/bin/bash
 
-declare -a models=("ESM-2-8M" "ESM-2-35M" "ESM-2-150M" "ESM-2-15B") # "ESM-2-650M" "ESM-2-3B" 
+declare -a models=("ESM-2-8M" "ESM-2-35M" "ESM-2-150M" "ESM-2-15B") # "ESM-2-650M" "ESM-2-3B"
 # output_dir="~/code/scratch/torchprotein_output/"
 task="fluorescence"
 log_dir="/home/yz979/code/scratch/torchprotein_logs/"
