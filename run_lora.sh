@@ -1,7 +1,7 @@
 #!/bin/bash
 
-declare -a models=( "ESM-2-3B" "ESM-2-15B") 
-declare -a tasks=("fluorescence" "subloc") 
+declare -a models=( "ESM-1b") 
+declare -a tasks=("subloc" "solubility" "contact" "yeast" "aav") 
 # output_dir="~/code/scratch/torchprotein_output/"
 # task="fluorescence"
 log_dir="/home/yz979/code/scratch/torchprotein_logs/"
@@ -25,11 +25,12 @@ do
         /model:/ { sub(/ESM-.*/, model) }
         /batch_size:/ { sub(/[0-9]+/, batch_size) }
         /path:/ {sub(/~\/scratch/, "~\/code\/scratch")}
-        /gpus:/ { sub(/\[0,1,2,3\]/, "[0,1,2,3,4,5,6,7]") }
         1' "$yaml_file" > temp_lora.yaml
 
-        # Execute the Python command
-        CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 --master-port=29501 script/run_single.py -c temp_lora.yaml --seed 0 > "$log_file" 2>&1
+        # /gpus:/ { sub(/\[0, 1, 2, 3\]/, "[0, 1, 2, 3, 4, 5, 6]") }
+
+        # Execute the Python comman
+        CUDA_VISIBLE_DEVICES=4,5,6,7 python -m torch.distributed.launch --nproc_per_node=4 --master-port=29500 script/run_single.py -c temp.yaml --seed 0 > "$log_file" 2>&1
         
         rm temp_lora.yaml
 
