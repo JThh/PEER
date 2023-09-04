@@ -1,4 +1,4 @@
-output_dir: ~/scratch/torchprotein_output/
+output_dir: ~/code//scratch/torchprotein_output/
 
 dataset:
   class: Solubility
@@ -18,8 +18,8 @@ task:
   class: PropertyPrediction
   model:
     class: ESM
-    path: ~/scratch/esm-model-weights/
-    model: ESM-1b
+    path: ~/code/scratch/esm-model-weights/
+    model: ESM-2-650M
   criterion: ce
   metric: ["acc", "mcc"]
   num_class: 2

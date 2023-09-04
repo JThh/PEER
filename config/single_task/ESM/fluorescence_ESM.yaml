@@ -16,7 +16,7 @@ task:
   model:
     class: ESM
     path: ~/code/scratch/esm2-model-weights/
-    model: ESM-2-15B
+    model: ESM-2-8M
 
   criterion: mse
   metric: ["mae", "rmse", "spearmanr"]

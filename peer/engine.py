@@ -6,6 +6,16 @@ import torch
 from torch import distributed as dist
 from torch import nn
 from torch.utils import data as torch_data
+from torch.distributed.fsdp import FullyShardedDataParallel as FSDP
+from torch.distributed.fsdp.fully_sharded_data_parallel import (
+    CPUOffload,
+    BackwardPrefetch,
+)
+from torch.distributed.fsdp.wrap import (
+    size_based_auto_wrap_policy,
+    enable_wrap,
+    wrap,
+)
 
 from torchdrug import data, core, utils
 from torchdrug.core import Registry as R
@@ -140,14 +150,13 @@ class MultiTaskEngine(core.Configurable):
             torch_data.DistributedSampler(train_set, self.world_size, self.rank)
                 for train_set in self.train_sets
         ]
-        models = self.models
         if self.world_size > 1:
             if self.device.type == "cuda":
-                models = nn.parallel.DistributedDataParallel(models, device_ids=[self.device],
-                                                             find_unused_parameters=True)
-            else:
-                models = nn.parallel.DistributedDataParallel(models, device_ids=[self.device],
-                                                             find_unused_parameters=True)
+                my_auto_wrap_policy = functools.partial(
+                        size_based_auto_wrap_policy, min_num_params=20000
+                    )
+                models = FSDP(models, device_id=self.rank, fsdp_auto_wrap_policy=my_auto_wrap_policy, cpu_offload=CPUOffload(offload_params=True))
+
         models.train()
 
         for epoch in self.meter(num_epoch):

@@ -2,7 +2,7 @@ output_dir: ~/scratch/torchprotein_output/
 
 dataset:
   class: ProteinNet
-  path: ~/scratch/protein-datasets/
+  path: ~/code/scratch/protein-datasets/
   atom_feature: null
   bond_feature: null
   transform:
@@ -20,8 +20,8 @@ task:
   class: ContactPrediction
   model:
     class: ESM
-    path: ~/scratch/esm-model-weights/
-    model: ESM-1b
+    path: ~/code/scratch/esm-model-weights/
+    model: ESM-2-8M
   criterion: bce
   metric: ["accuracy", "prec@L5", "prec@5"]
   max_length: 350
@@ -37,7 +37,7 @@ optimizer:
   lr: 2.0e-4
 
 engine:
-  gpus: [0, 1, 2, 3]
+  gpus: [0,1,2,3]
   batch_size: 2
 
 lr_ratio: 0.1

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-declare -a models=( "ESM-2-3B" "ESM-2-15B") 
-declare -a tasks=("solubility" "contact" "yeast" "aav" ) 
+declare -a models=( "ESM-2-650M") 
+declare -a tasks=( "solubility" "contact") 
 # output_dir="~/code/scratch/torchprotein_output/"
 # task="fluorescence"
 log_dir="/home/yz979/code/scratch/torchprotein_logs/"
@@ -11,7 +11,7 @@ do
     for task in "${tasks[@]}"
     do
         yaml_file="config/single_task/ESM/${task}_ESM.yaml"
-        batch_size=1
+        batch_size=4
 
         log_file="${log_dir}task_${task}_run_${model}_bs${batch_size}.log"
 
@@ -31,7 +31,7 @@ do
 #         /gpus:/ { sub(/\[0, 1, 2, 3\]/, "[0, 1, 2, 3, 4, 5, 6]") }
 
         # Execute the Python comman
-        CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 --master-port=29501 script/run_single.py -c temp.yaml --seed 0 > "$log_file" 2>&1
+        CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 --master-port=29503 script/run_single.py -c temp2.yaml --seed 0 > "$log_file" 2>&1
         
         rm temp.yaml
 

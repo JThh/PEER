@@ -1,7 +1,7 @@
 #!/bin/bash
 
-declare -a models=( "ESM-1b") 
-declare -a tasks=("subloc" "solubility" "contact" "yeast" "aav") 
+declare -a models=( "ESM-2-3B") 
+declare -a tasks=("fluorescence" "solubility" "subloc" "contact" "yeast" "aav") 
 # output_dir="~/code/scratch/torchprotein_output/"
 # task="fluorescence"
 log_dir="/home/yz979/code/scratch/torchprotein_logs/"
@@ -13,7 +13,7 @@ do
         yaml_file="config/single_task/ESM/${task}_ESM.yaml"
         batch_size=1
 
-        log_file="${log_dir}task_${task}_run_${model}_bs${batch_size}.log"
+        log_file="${log_dir}ft_task_${task}_run_${model}_bs${batch_size}.log"
 
         echo "Running with task: $task, model: $model, batch size: $batch_size"
 
@@ -30,7 +30,7 @@ do
         # /gpus:/ { sub(/\[0, 1, 2, 3\]/, "[0, 1, 2, 3, 4, 5, 6]") }
 
         # Execute the Python comman
-        CUDA_VISIBLE_DEVICES=4,5,6,7 python -m torch.distributed.launch --nproc_per_node=4 --master-port=29500 script/run_single.py -c temp.yaml --seed 0 > "$log_file" 2>&1
+        CUDA_VISIBLE_DEVICES=4,5,6,7 python -m torch.distributed.launch --nproc_per_node=4 --master-port=29502 script/run_single.py -c temp_lora.yaml --seed 0 > "$log_file" 2>&1
         
         rm temp_lora.yaml
 
